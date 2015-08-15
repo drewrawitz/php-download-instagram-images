@@ -39,6 +39,27 @@
   // create our empty arrays
   $feed_recent_array = array();
   $json_feed_data = array();
+  $i = 0;
+
+  function add_images($data) {
+    global $feed_recent_array;
+    global $i;
+
+    // loop through the feed and put the items in an array
+    foreach($data->data as $item) :
+      $i++;
+      $feed_recent_array['full'][$i]['full_img'] = $item->images->standard_resolution->url;
+      $feed_recent_array['full'][$i]['base_img'] = basename($item->images->standard_resolution->url);
+      $feed_recent_array['full'][$i]['description'] = ($item->caption) ? $item->caption->text : "";
+    endforeach;
+
+    // loop through this current function again with the next batch of photos
+    if($data->pagination->next_url) :
+      $func = __FUNCTION__;
+      $next_url = json_decode(file_get_contents($data->pagination->next_url, true));
+      $func($next_url);
+    endif;
+  }
 
   // grab the instagram feed
   $feed_url = "https://api.instagram.com/v1/users/".INSTAGRAM_ID."/media/recent/?count=".PHOTO_COUNT."&access_token=".ACCESS_TOKEN."";
@@ -51,14 +72,7 @@
   // begin script
   echo "\nBeginning to download instagram images\n\n";
 
-  // loop through the feed and put the items in an array
-  $i = 0;
-  foreach($data->data as $item) :
-    $i++;
-    $feed_recent_array['full'][$i]['full_img'] = $item->images->standard_resolution->url;
-    $feed_recent_array['full'][$i]['base_img'] = basename($item->images->standard_resolution->url);
-    $feed_recent_array['full'][$i]['description'] = ($item->caption) ? $item->caption->text : "";
-  endforeach;
+  add_images($data);
 
   // loop through our array
   foreach($feed_recent_array['full'] as $item) :
