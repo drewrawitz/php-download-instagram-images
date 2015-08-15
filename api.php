@@ -42,6 +42,10 @@
   $feed_url = "https://api.instagram.com/v1/users/".INSTAGRAM_ID."/media/recent/?count=".PHOTO_COUNT."&access_token=".ACCESS_TOKEN."";
   $data = json_decode(file_get_contents($feed_url, true));
 
+  if(!$data) :
+    die('Could not fetch feed URL. Double check your settings file and make sure your keys are correct.');
+  endif;
+
   // begin script
   echo "\nBeginning to download instagram images\n\n";
 
