@@ -63,7 +63,7 @@
     $json_feed_data[] = $item;
 
     // if there's a new image, let's save it to the recent folder
-    if(!glob(IMAGE_PATH."/*".basename($item['full_img']))) {
+    if(!glob(IMAGE_PATH."/full/*".basename($item['full_img']))) {
       $file_name = basename($item['full_img']);
 
       save_image($item['full_img'],IMAGE_PATH."/full/".$file_name);
