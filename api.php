@@ -1,4 +1,7 @@
 <?php
+  // set the appropriate header since we are saving out images
+  header("Content-Type: image/jpeg");
+
   // require our settings which contain the API information
   require('settings.php');
 
@@ -30,7 +33,6 @@
       $dest_imagey = 60;
       $dest_image = imagecreatetruecolor($dest_imagex, $dest_imagey);
       imagecopyresampled($dest_image, $source_image, 0, 0, 0, 0, $dest_imagex, $dest_imagey, $source_imagex, $source_imagey);
-      header("Content-Type: image/jpeg");
       imagejpeg($dest_image,$pathToThumbs . $filename,80);
   }
 
