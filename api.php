@@ -1,11 +1,8 @@
 <?php
-  // define some settings
-  define("INSTAGRAM_ID", "xxxxxxx");
-  define("ACCESS_TOKEN", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-  define("PHOTO_COUNT", 100);
-  define("IMAGE_PATH", "images");
+  // require our settings which contain the API information
+  require('settings.php');
 
-   // function to save the external images so we have a copy
+  // function to save the external images so we have a copy
   function save_image($inPath,$outPath) {
       $in  =  fopen($inPath, "rb");
       $out =  fopen($outPath, "wb");
@@ -63,11 +60,11 @@
     $json_feed_data[] = $item;
 
     // if there's a new image, let's save it to the recent folder
-    if(!glob(IMAGE_PATH."/full/*".basename($item['full_img']))) {
+    if(!glob(FULL_IMAGE_PATH."/*".basename($item['full_img']))) {
       $file_name = basename($item['full_img']);
 
-      save_image($item['full_img'],IMAGE_PATH."/full/".$file_name);
-      createThumbnail($file_name, IMAGE_PATH."/full/", IMAGE_PATH."/thumbs/");
+      save_image($item['full_img'], FULL_IMAGE_PATH."/".$file_name);
+      createThumbnail($file_name, FULL_IMAGE_PATH."/", THUMBS_IMAGE_PATH."/");
       echo "New image ".basename($item['full_img'])." created!\n";
     } else {
       echo basename($item['full_img'])." exists. Skipping.\n";
