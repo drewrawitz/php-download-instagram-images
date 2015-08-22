@@ -47,10 +47,13 @@
 
     // loop through the feed and put the items in an array
     foreach($data->data as $item) :
-      $i++;
-      $feed_recent_array['full'][$i]['full_img'] = $item->images->standard_resolution->url;
-      $feed_recent_array['full'][$i]['base_img'] = basename($item->images->standard_resolution->url);
-      $feed_recent_array['full'][$i]['description'] = ($item->caption) ? $item->caption->text : "";
+      // only add images, not videos
+      if($item->type == "image") :
+        $i++;
+        $feed_recent_array['full'][$i]['full_img'] = $item->images->standard_resolution->url;
+        $feed_recent_array['full'][$i]['base_img'] = basename($item->images->standard_resolution->url);
+        $feed_recent_array['full'][$i]['description'] = ($item->caption) ? $item->caption->text : "";
+      endif;
     endforeach;
 
     // loop through this current function again with the next batch of photos
