@@ -15,15 +15,6 @@
       fclose($in);
       fclose($out);
   }
-  // function to improve strstr()
-  function strstr_after($haystack, $needle, $case_insensitive = false) {
-    $strpos = ($case_insensitive) ? 'stripos' : 'strpos';
-    $pos = $strpos($haystack, $needle);
-    if (is_int($pos)) {
-        return substr($haystack, $pos + strlen($needle));
-    }
-    return $pos;
-  }
 
   // create our empty arrays
   $feed_recent_array = array();
