@@ -34,13 +34,6 @@ class InstagramFeed
   public $thumbnail_path = 'images/thumbs';
 
   /**
-   * The Instagram User ID.
-   *
-   * @var string
-   */
-  private $_instagramId;
-
-  /**
    * The Instagram User Access Token
    *
    * @var string
