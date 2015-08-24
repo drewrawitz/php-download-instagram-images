@@ -24,17 +24,6 @@
     }
     return $pos;
   }
-  // function to save thumbnails from the new images we just saved
-  function createThumbnail($filename, $pathToImages, $pathToThumbs) {
-      $source_image = imagecreatefromjpeg($pathToImages . $filename);
-      $source_imagex = imagesx($source_image);
-      $source_imagey = imagesy($source_image);
-      $dest_imagex = 60;
-      $dest_imagey = 60;
-      $dest_image = imagecreatetruecolor($dest_imagex, $dest_imagey);
-      imagecopyresampled($dest_image, $source_image, 0, 0, 0, 0, $dest_imagex, $dest_imagey, $source_imagex, $source_imagey);
-      imagejpeg($dest_image,$pathToThumbs . $filename,80);
-  }
 
   // create our empty arrays
   $feed_recent_array = array();
@@ -51,6 +40,7 @@
       if($item->type == "image") :
         $i++;
         $feed_recent_array['full'][$i]['full_img'] = $item->images->standard_resolution->url;
+        $feed_recent_array['full'][$i]['thumbnail_img'] = $item->images->thumbnail->url;
         $feed_recent_array['full'][$i]['base_img'] = basename($item->images->standard_resolution->url);
         $feed_recent_array['full'][$i]['description'] = ($item->caption) ? $item->caption->text : "";
       endif;
@@ -86,8 +76,12 @@
     if(!glob(FULL_IMAGE_PATH."/*".basename($item['full_img']))) {
       $file_name = basename($item['full_img']);
 
+      // Save full image
       save_image($item['full_img'], FULL_IMAGE_PATH."/".$file_name);
-      createThumbnail($file_name, FULL_IMAGE_PATH."/", THUMBS_IMAGE_PATH."/");
+
+      // Save thumbnail
+      save_image($item['thumbnail_img'], THUMBS_IMAGE_PATH."/".$file_name);
+
       echo "New image ".basename($item['full_img'])." created!\n";
     } else {
       echo basename($item['full_img'])." exists. Skipping.\n";
