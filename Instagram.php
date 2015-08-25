@@ -86,7 +86,7 @@ class InstagramFeed
     # Loop through the different rows
     foreach($data->data as $item) :
 
-      $this->data_feed[$item->id] = array(
+      $this->data_feed[] = array(
         'full_image' => $item->images->standard_resolution->url,
         'thumbnail_image' => $item->images->thumbnail->url,
         'base' => basename($item->images->standard_resolution->url),
